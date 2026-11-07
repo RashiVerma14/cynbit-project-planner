@@ -27,15 +27,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('cynbit_admin_user', JSON.stringify(user));
       return { success: true };
     } catch (error) {
-      if (email === 'admin@cynbit.in') {
-        const demoUser = { email: 'admin@cynbit.in', fullName: 'Cynbit Lead Architect', role: 'ROLE_ADMIN' };
-        setToken('demo-jwt-assessment-token');
-        setAdmin(demoUser);
-        localStorage.setItem('cynbit_admin_token', 'demo-jwt-assessment-token');
-        localStorage.setItem('cynbit_admin_user', JSON.stringify(demoUser));
-        return { success: true };
-      }
-      return { success: false, error: error.response?.data?.message || 'Authentication failed' };
+      const msg = error.response?.data?.message || 'Authentication failed. Please verify credentials.';
+      return { success: false, error: msg };
     } finally {
       setLoading(false);
     }
@@ -49,11 +42,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ admin, token, isAuthenticated: !!token, login, logout, loading }}>
+    <AuthContext.Provider value={{ admin, token, login, logout, loading, isAuthenticated: !!token }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
-
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

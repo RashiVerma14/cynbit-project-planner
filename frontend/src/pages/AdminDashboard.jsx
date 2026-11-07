@@ -48,31 +48,18 @@ export default function AdminDashboard() {
     REJECTED: { label: 'Rejected', variant: 'red' },
   };
 
+  const [apiError, setApiError] = useState(null);
+
   const loadInquiries = async () => {
     setLoading(true);
+    setApiError(null);
     try {
       const res = await adminService.getProjects();
       const list = res.data?.data || res.data || [];
       setInquiries(Array.isArray(list) ? list : list.content || []);
     } catch (e) {
-      setInquiries([
-        {
-          projectId: 'CYN-2026-8942',
-          clientInfo: { fullName: 'Jane Doe', businessEmail: 'jane@novadynamics.io', companyName: 'Nova Dynamics', phone: '+91 98765 43210' },
-          projectScope: { projectName: 'NovaOps Intelligent Copilot', category: 'AI_POWERED_APP', description: 'Autonomous customer support agent with live invoice generation and ERP synchronization.' },
-          estimation: { totalEffortHours: 420, indicativeCostMinINR: 378000, indicativeCostMaxINR: 567000, estimatedDurationWeeks: 10 },
-          inquiryStatus: 'NEW',
-          createdAt: new Date().toISOString()
-        },
-        {
-          projectId: 'CYN-2026-7814',
-          clientInfo: { fullName: 'Rajesh Sharma', businessEmail: 'rajesh@urbanstay.in', companyName: 'UrbanStay PropTech', phone: '+91 91234 56789' },
-          projectScope: { projectName: 'UrbanStay Property Cloud', category: 'SAAS_PLATFORM', description: 'Multi-tenant property management platform with automated rent collection and IoT lock integration.' },
-          estimation: { totalEffortHours: 280, indicativeCostMinINR: 252000, indicativeCostMaxINR: 378000, estimatedDurationWeeks: 7 },
-          inquiryStatus: 'UNDER_REVIEW',
-          createdAt: new Date(Date.now() - 86400000).toISOString()
-        }
-      ]);
+      setInquiries([]);
+      setApiError(e.response?.data?.message || 'Failed to fetch inquiries from backend API.');
     } finally {
       setLoading(false);
     }
@@ -254,10 +241,16 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-slate-300">
+              {apiError && (
+                <div className="p-3.5 mb-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center justify-between">
+                  <span>API Error: {apiError}</span>
+                  <Button variant="outline" size="sm" onClick={loadInquiries}>Retry</Button>
+                </div>
+              )}
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="py-12 text-center text-slate-500">
-                    No project inquiries matching current filter criteria.
+                    {apiError ? 'Could not load project inquiries from server.' : 'No project inquiries found.'}
                   </td>
                 </tr>
               ) : (

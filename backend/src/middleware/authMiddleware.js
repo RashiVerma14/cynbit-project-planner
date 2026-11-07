@@ -12,33 +12,22 @@ export const protectAdmin = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: 'Not authorized: Missing bearer token.'
+      message: 'Not authorized: Missing bearer authorization token.'
     });
   }
 
   try {
-    // Check for demo evaluation token
-    if (token === 'demo-jwt-assessment-token') {
-      req.admin = {
-        email: 'admin@cynbit.in',
-        fullName: 'Cynbit Lead Architect (Demo)',
-        role: 'ROLE_ADMIN'
-      };
-      return next();
+    const decoded = jwt.verify(token, config.jwtSecret);
+    const user = await AdminUser.findById(decoded.id).select('-passwordHash');
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authorized: Admin account no longer exists.'
+      });
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret);
-    let user;
-    try {
-      user = await AdminUser.findById(decoded.id).select('-passwordHash');
-    } catch (e) {}
-
-    req.admin = user || {
-      id: decoded.id,
-      email: decoded.email,
-      role: decoded.role || 'ROLE_ADMIN'
-    };
-
+    req.admin = user;
     next();
   } catch (error) {
     return res.status(401).json({
@@ -47,4 +36,3 @@ export const protectAdmin = async (req, res, next) => {
     });
   }
 };
-

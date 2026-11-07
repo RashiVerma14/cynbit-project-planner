@@ -194,6 +194,7 @@ export default function Planner() {
   const handleSubmit = async () => {
     if (!validateStep()) return;
     setSubmitting(true);
+    setErrorMsg('');
     try {
       const payload = {
         clientInfo: {
@@ -225,16 +226,14 @@ export default function Planner() {
 
       const res = await projectService.submitProject(payload);
       confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
-      const pId = res.data?.data?.projectId || res.data?.projectId || 'CYN-' + Math.floor(1000 + Math.random() * 9000);
+      const pId = res.data?.data?.projectId || res.data?.projectId;
+      if (!pId) {
+        throw new Error('Server did not return a valid project identification.');
+      }
       navigate(`/results/${pId}`);
     } catch (e) {
-      const offlineId = 'CYN-' + Math.floor(1000 + Math.random() * 9000);
-      localStorage.setItem(`cynbit_preview_${offlineId}`, JSON.stringify({
-        ...formData,
-        projectId: offlineId,
-        createdAt: new Date().toISOString()
-      }));
-      navigate(`/results/${offlineId}`);
+      const serverMessage = e.response?.data?.message || e.message || 'Failed to submit inquiry to server.';
+      setErrorMsg(`Submission Failed: ${serverMessage}. Please verify backend connectivity.`);
     } finally {
       setSubmitting(false);
     }
