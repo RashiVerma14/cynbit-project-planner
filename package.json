@@ -1,0 +1,19 @@
+{
+  "name": "cynbit-project-planner-workspace",
+  "version": "1.0.0",
+  "description": "Cynbit Project Planner - Technical Assessment",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "test:backend": "cd backend && npm test",
+    "start": "cd backend && npm start"
+  },
+  "keywords": [
+    "cynbit",
+    "full-stack",
+    "intern-assessment"
+  ],
+  "author": "Rashi Verma"
+}
