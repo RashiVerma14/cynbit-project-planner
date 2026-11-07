@@ -26,3 +26,4 @@ export const themeColors = {
     accent: '#22d3ee',
   }
 };
+
