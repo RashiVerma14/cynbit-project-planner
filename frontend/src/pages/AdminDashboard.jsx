@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { LogOut, Eye, Search, Filter, RefreshCw, X, ExternalLink, Loader2 } from 'lucide-react';
+import { LogOut, Eye, Search, Filter, RefreshCw, X, ExternalLink, Loader2, ShieldCheck, User, Mail, Layers } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { adminService } from '../services/api';
 
@@ -67,21 +67,42 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
+      
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-            OPERATIONAL LEAD CONSOLE
-          </span>
-          <h1 className="text-2xl font-extrabold text-white mt-2">Project Inquiries & Blueprints</h1>
-          <p className="text-xs text-slate-400">Signed in as: {admin?.fullName || 'Cynbit Architect'} ({admin?.email || 'admin@cynbit.in'})</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              OPERATIONAL LEAD CONSOLE
+            </span>
+            <span className="text-xs text-slate-400 font-mono">
+              Signed in as: {admin?.fullName || 'Cynbit Architect'}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+            Project Inquiries & Blueprint Management
+          </h1>
         </div>
 
         <div className="flex items-center gap-3">
-          <button onClick={loadInquiries} className="p-2 rounded-lg bg-slate-900 border border-white/10 text-slate-300 hover:text-white">
+          <button 
+            onClick={loadInquiries} 
+            className="p-2.5 rounded-xl bg-slate-900 border border-white/10 text-slate-300 hover:text-white transition-colors"
+          >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
-          <button onClick={logout} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 text-red-300 border border-red-500/30 text-xs font-semibold">
+          
+          <Link
+            to="/planner"
+            className="px-4 py-2 rounded-xl bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-xs font-semibold hover:bg-cyan-500/20"
+          >
+            Open Wizard Simulator
+          </Link>
+
+          <button 
+            onClick={logout} 
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-red-500/10 text-red-300 border border-red-500/30 text-xs font-semibold hover:bg-red-500/20"
+          >
             <LogOut className="w-3.5 h-3.5" /> Sign Out
           </button>
         </div>
@@ -89,84 +110,101 @@ export default function AdminDashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel p-4 rounded-xl border border-white/10">
-          <span className="text-[10px] font-mono text-slate-400">TOTAL INQUIRIES</span>
-          <div className="text-2xl font-bold text-white font-mono mt-1">{inquiries.length}</div>
+        <div className="glass-card p-5 rounded-2xl border border-white/10">
+          <span className="text-[10px] font-mono text-slate-400 block uppercase font-semibold">TOTAL INQUIRIES</span>
+          <div className="text-3xl font-extrabold text-white font-mono mt-1">{inquiries.length}</div>
         </div>
-        <div className="glass-panel p-4 rounded-xl border border-cyan-500/20">
-          <span className="text-[10px] font-mono text-cyan-400">NEW INQUIRIES</span>
-          <div className="text-2xl font-bold text-cyan-300 font-mono mt-1">{inquiries.filter((i) => i.inquiryStatus === 'NEW').length}</div>
+
+        <div className="glass-card p-5 rounded-2xl border border-cyan-500/25">
+          <span className="text-[10px] font-mono text-cyan-400 block uppercase font-semibold">NEW INQUIRIES</span>
+          <div className="text-3xl font-extrabold text-cyan-300 font-mono mt-1">
+            {inquiries.filter((i) => i.inquiryStatus === 'NEW').length}
+          </div>
         </div>
-        <div className="glass-panel p-4 rounded-xl border border-yellow-500/20">
-          <span className="text-[10px] font-mono text-yellow-400">UNDER REVIEW</span>
-          <div className="text-2xl font-bold text-yellow-300 font-mono mt-1">{inquiries.filter((i) => i.inquiryStatus === 'UNDER_REVIEW').length}</div>
+
+        <div className="glass-card p-5 rounded-2xl border border-yellow-500/25">
+          <span className="text-[10px] font-mono text-yellow-400 block uppercase font-semibold">UNDER EVALUATION</span>
+          <div className="text-3xl font-extrabold text-yellow-300 font-mono mt-1">
+            {inquiries.filter((i) => i.inquiryStatus === 'UNDER_REVIEW').length}
+          </div>
         </div>
-        <div className="glass-panel p-4 rounded-xl border border-emerald-500/20">
-          <span className="text-[10px] font-mono text-emerald-400">CONVERTED</span>
-          <div className="text-2xl font-bold text-emerald-300 font-mono mt-1">{inquiries.filter((i) => i.inquiryStatus === 'CONVERTED').length}</div>
+
+        <div className="glass-card p-5 rounded-2xl border border-emerald-500/25">
+          <span className="text-[10px] font-mono text-emerald-400 block uppercase font-semibold">CONVERTED LEADS</span>
+          <div className="text-3xl font-extrabold text-emerald-300 font-mono mt-1">
+            {inquiries.filter((i) => i.inquiryStatus === 'CONVERTED').length}
+          </div>
         </div>
       </div>
 
-      {/* Search & Filter */}
+      {/* Search & Filters */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+        <div className="relative w-full sm:w-96">
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search inquiries by project, client, ID..."
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs focus:border-cyan-400 focus:outline-none"
+            placeholder="Search inquiries by project, client, email, ID..."
+            className="w-full glass-input pl-10 pr-4 py-2.5 rounded-xl text-white text-xs focus:border-cyan-400"
           />
         </div>
 
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-xs"
-        >
-          <option value="ALL">All Statuses</option>
-          {Object.keys(statusConfig).map((k) => (
-            <option key={k} value={k}>{statusConfig[k].label}</option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-400 font-mono">Status:</span>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="glass-input px-3 py-2 rounded-xl text-white text-xs"
+          >
+            <option value="ALL">All Statuses</option>
+            {Object.keys(statusConfig).map((k) => (
+              <option key={k} value={k}>{statusConfig[k].label}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      {/* Table */}
-      <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden">
+      {/* Leads Table */}
+      <div className="glass-card rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-white/5 bg-slate-950/60 font-mono text-slate-400">
-              <th className="py-3 px-4">PROJECT & ID</th>
-              <th className="py-3 px-4">CLIENT / COMPANY</th>
-              <th className="py-3 px-4">EST. EFFORT</th>
-              <th className="py-3 px-4">STATUS</th>
-              <th className="py-3 px-4 text-right">ACTION</th>
+            <tr className="border-b border-white/5 bg-slate-950/70 font-mono text-slate-400">
+              <th className="py-3.5 px-5 font-semibold">PROJECT & ID</th>
+              <th className="py-3.5 px-5 font-semibold">CLIENT / LEAD</th>
+              <th className="py-3.5 px-5 font-semibold">EFFORT & BUDGET</th>
+              <th className="py-3.5 px-5 font-semibold">STATUS</th>
+              <th className="py-3.5 px-5 font-semibold text-right">ACTION</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
             {filtered.map((inq) => {
               const st = statusConfig[inq.inquiryStatus] || statusConfig.NEW;
               return (
-                <tr key={inq.projectId} className="hover:bg-slate-900/40">
-                  <td className="py-3.5 px-4">
-                    <div className="font-semibold text-white">{inq.projectScope?.projectName}</div>
-                    <div className="text-[11px] font-mono text-cyan-400">{inq.projectId}</div>
+                <tr key={inq.projectId} className="hover:bg-slate-900/40 transition-colors">
+                  <td className="py-4 px-5">
+                    <div className="font-bold text-white text-sm">{inq.projectScope?.projectName}</div>
+                    <div className="text-[11px] font-mono text-cyan-400 mt-0.5">{inq.projectId}</div>
                   </td>
-                  <td className="py-3.5 px-4">
-                    <div className="text-slate-200">{inq.clientInfo?.fullName}</div>
+                  <td className="py-4 px-5">
+                    <div className="text-slate-200 font-semibold">{inq.clientInfo?.fullName}</div>
                     <div className="text-[11px] text-slate-400">{inq.clientInfo?.companyName} • {inq.clientInfo?.businessEmail}</div>
                   </td>
-                  <td className="py-3.5 px-4 font-mono">
+                  <td className="py-4 px-5 font-mono">
                     <div className="text-white font-bold">{inq.estimation?.totalEffortHours} hrs</div>
+                    <div className="text-[11px] text-cyan-300">
+                      ₹{inq.estimation?.indicativeCostMinINR?.toLocaleString('en-IN')} – ₹{inq.estimation?.indicativeCostMaxINR?.toLocaleString('en-IN')}
+                    </div>
                   </td>
-                  <td className="py-3.5 px-4">
-                    <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-mono border ${st.color}`}>{st.label}</span>
+                  <td className="py-4 px-5">
+                    <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-mono border ${st.color}`}>
+                      {st.label}
+                    </span>
                   </td>
-                  <td className="py-3.5 px-4 text-right">
+                  <td className="py-4 px-5 text-right">
                     <button
                       onClick={() => setSelectedInquiry(inq)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-900 text-slate-300 border border-white/10 hover:border-cyan-500/30 text-xs"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-slate-200 border border-white/10 hover:border-cyan-500/30 text-xs font-semibold"
                     >
                       <Eye className="w-3.5 h-3.5 text-cyan-400" /> Inspect
                     </button>
@@ -178,25 +216,31 @@ export default function AdminDashboard() {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* Inquiry Inspect Modal */}
       {selectedInquiry && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="glass-panel w-full max-w-2xl rounded-2xl border border-cyan-500/30 p-6 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="glass-card w-full max-w-2xl rounded-3xl border border-cyan-500/30 p-6 sm:p-8 space-y-5 shadow-2xl">
             <div className="flex justify-between items-start pb-3 border-b border-white/10">
               <div>
-                <span className="text-[10px] font-mono text-cyan-400">{selectedInquiry.projectId}</span>
-                <h3 className="text-lg font-bold text-white">{selectedInquiry.projectScope?.projectName}</h3>
+                <span className="text-xs font-mono text-cyan-400 px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30">
+                  {selectedInquiry.projectId}
+                </span>
+                <h3 className="text-xl font-bold text-white mt-1.5">{selectedInquiry.projectScope?.projectName}</h3>
               </div>
-              <button onClick={() => setSelectedInquiry(null)} className="p-1 text-slate-400 hover:text-white"><X className="w-5 h-5" /></button>
+              <button onClick={() => setSelectedInquiry(null)} className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <div className="flex flex-wrap gap-1.5 text-xs">
+            <div className="flex flex-wrap gap-2 text-xs">
               {Object.keys(statusConfig).map((k) => (
                 <button
                   key={k}
                   onClick={() => handleStatusChange(selectedInquiry.projectId, k)}
-                  className={`px-2.5 py-1 rounded border text-[10px] font-mono ${
-                    selectedInquiry.inquiryStatus === k ? statusConfig[k].color + ' font-bold ring-1 ring-cyan-400' : 'bg-slate-900 border-white/5 text-slate-400'
+                  className={`px-3 py-1 rounded-xl border text-[11px] font-mono transition-all ${
+                    selectedInquiry.inquiryStatus === k
+                      ? statusConfig[k].color + ' font-bold ring-2 ring-cyan-400/30'
+                      : 'bg-slate-900 border-white/5 text-slate-400 hover:text-white'
                   }`}
                 >
                   {statusConfig[k].label}
@@ -204,20 +248,24 @@ export default function AdminDashboard() {
               ))}
             </div>
 
-            <div className="p-3 rounded-lg bg-slate-900/50 border border-white/5 text-xs text-slate-300 space-y-1">
-              <div>Client: <span className="text-white font-medium">{selectedInquiry.clientInfo?.fullName}</span> ({selectedInquiry.clientInfo?.businessEmail})</div>
+            <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/5 text-xs text-slate-300 space-y-1.5">
+              <div>Client: <span className="text-white font-bold">{selectedInquiry.clientInfo?.fullName}</span> ({selectedInquiry.clientInfo?.businessEmail})</div>
+              <div>Company: <span className="text-slate-200">{selectedInquiry.clientInfo?.companyName}</span></div>
               <div>Description: {selectedInquiry.projectScope?.description}</div>
             </div>
 
             <div className="pt-3 border-t border-white/10 flex justify-between items-center">
-              <Link to={`/results/${selectedInquiry.projectId}`} target="_blank" className="text-xs text-cyan-400 flex items-center gap-1">
-                Open Public Result View <ExternalLink className="w-3.5 h-3.5" />
+              <Link to={`/results/${selectedInquiry.projectId}`} target="_blank" className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold">
+                Open Full Results Dossier <ExternalLink className="w-3.5 h-3.5" />
               </Link>
-              <button onClick={() => setSelectedInquiry(null)} className="px-4 py-1.5 rounded-lg bg-slate-800 text-white text-xs">Close</button>
+              <button onClick={() => setSelectedInquiry(null)} className="px-5 py-2 rounded-xl bg-slate-800 text-white text-xs font-semibold">
+                Close
+              </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 }
