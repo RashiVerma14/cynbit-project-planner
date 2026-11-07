@@ -29,3 +29,4 @@ export const getProjectDetails = async (req, res, next) => {
     next(error);
   }
 };
+

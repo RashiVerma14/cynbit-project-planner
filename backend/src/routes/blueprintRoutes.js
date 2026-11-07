@@ -6,3 +6,4 @@ const router = express.Router();
 router.post('/:id/blueprint', regenerateBlueprint);
 
 export default router;
+

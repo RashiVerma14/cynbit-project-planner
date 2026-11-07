@@ -11,3 +11,4 @@ router.get('/projects/:id', getAdminProjectById);
 router.patch('/projects/:id/status', updateInquiryStatus);
 
 export default router;
+

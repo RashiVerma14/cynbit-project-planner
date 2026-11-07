@@ -11,3 +11,4 @@ export const config = {
   groqModel: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
   corsOrigin: process.env.CORS_ORIGIN || '*'
 };
+

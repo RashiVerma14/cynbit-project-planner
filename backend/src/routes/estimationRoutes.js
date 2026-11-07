@@ -7,3 +7,4 @@ const router = express.Router();
 router.post('/', validateEstimationRequest, calculateEstimatePreview);
 
 export default router;
+

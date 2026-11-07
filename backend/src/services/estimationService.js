@@ -108,3 +108,4 @@ export default {
   calculateEstimation,
   ESTIMATION_CONFIG
 };
+

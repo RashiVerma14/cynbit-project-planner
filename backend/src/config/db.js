@@ -24,3 +24,4 @@ export const connectDB = async () => {
 };
 
 export const getDBStatus = () => (isConnected ? 'CONNECTED' : 'DISCONNECTED_IN_MEMORY_FALLBACK');
+

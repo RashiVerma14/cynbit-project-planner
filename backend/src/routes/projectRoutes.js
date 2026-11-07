@@ -8,3 +8,4 @@ router.post('/', validateProjectSubmission, submitProjectInquiry);
 router.get('/:id', getProjectDetails);
 
 export default router;
+

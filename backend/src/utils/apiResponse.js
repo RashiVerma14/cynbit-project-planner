@@ -13,3 +13,4 @@ export const errorResponse = (res, message = 'An error occurred', statusCode = 5
     ...(errors && { errors })
   });
 };
+

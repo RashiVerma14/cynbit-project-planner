@@ -106,3 +106,4 @@ const projectInquirySchema = new mongoose.Schema(
 );
 
 export const ProjectInquiry = mongoose.model('ProjectInquiry', projectInquirySchema);
+

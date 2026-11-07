@@ -54,3 +54,4 @@ export const updateInquiryStatus = async (req, res, next) => {
     next(error);
   }
 };
+
