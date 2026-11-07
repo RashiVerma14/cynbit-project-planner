@@ -7,6 +7,13 @@ Developed by **Rashi Verma** for the **Full Stack Developer Intern Technical Ass
 
 ---
 
+### 🌐 Live Deployment & Project Links
+* **Live Deployed Prototype:** [https://rashiverma14.github.io/cynbit-project-planner/](https://rashiverma14.github.io/cynbit-project-planner/)
+* **GitHub Repository:** [https://github.com/RashiVerma14/cynbit-project-planner](https://github.com/RashiVerma14/cynbit-project-planner)
+* **Company Website:** [https://www.cynbit.in/](https://www.cynbit.in/)
+
+---
+
 ## 🌟 Executive Overview & Problem Statement
 
 Potential clients visiting Cynbit's website often have ambitious concepts for software products, AI automation systems, SaaS platforms, or custom enterprise applications, but face high barriers to initial engagement:

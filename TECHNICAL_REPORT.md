@@ -2,6 +2,8 @@
 **Role:** Full Stack Developer Intern  
 **Applicant:** Rashi Verma  
 **Project:** Cynbit Project Planner — *"From Business Vision to Technical Blueprint"*  
+**Live Deployed Application:** [https://rashiverma14.github.io/cynbit-project-planner/](https://rashiverma14.github.io/cynbit-project-planner/)  
+**GitHub Repository:** [https://github.com/RashiVerma14/cynbit-project-planner](https://github.com/RashiVerma14/cynbit-project-planner)  
 **Target Organization:** Cynbit Technologies Private Limited ([cynbit.in](https://www.cynbit.in/))  
 **Date:** November 2026  
 
