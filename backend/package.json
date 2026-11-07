@@ -1,0 +1,30 @@
+{
+  "name": "cynbit-project-planner-backend",
+  "version": "1.0.0",
+  "description": "Enterprise Project Discovery and Architectural Estimation Engine for Cynbit Technologies",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed:admin": "node src/utils/seedAdmin.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5"
+  },
+  "keywords": [
+    "cynbit",
+    "estimation-engine",
+    "ai-blueprint",
+    "express",
+    "mongodb"
+  ],
+  "author": "Rashi Verma",
+  "license": "ISC"
+}
